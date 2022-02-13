@@ -3,12 +3,14 @@
     windows_subsystem = "windows"
 )]
 
+use std::fs;
 use tauri::command;
 
 #[command]
-async fn filesystemcall(argument: String) -> String {
+async fn filesystemcall(argument: String) -> Result<String, String> {
+    fs::create_dir("TEST_DIR").expect("Failed to create directory");
     println!("lololol {}", argument);
-    argument.to_string()
+    Ok(argument.to_string())
 }
 
 fn main() {
