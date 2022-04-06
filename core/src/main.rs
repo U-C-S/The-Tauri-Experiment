@@ -4,7 +4,8 @@
 )]
 
 use std::fs;
-use tauri::command;
+use tauri::{command, Manager};
+use window_vibrancy::apply_mica;
 
 #[command]
 async fn filesystemcall(argument: String) -> Result<String, String> {
@@ -16,6 +17,11 @@ async fn filesystemcall(argument: String) -> Result<String, String> {
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![filesystemcall])
+        .setup(|app| {
+            let window = app.get_window("main").unwrap();
+            _ = apply_mica(&window);
+            Ok(())
+        })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
